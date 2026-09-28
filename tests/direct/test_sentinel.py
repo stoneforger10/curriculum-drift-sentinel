@@ -46,4 +46,4 @@ def test_bad_baseline_fails_closed(direct_vm, direct_deploy, direct_alice):
     direct_vm.mock_web(r"live\.example\.org/current", {"status": 200, "body": CHANGED})
     c.audit("pilot", "bad")
     assert json.loads(c.get_audit("pilot", "bad"))["decision"] == "INCONCLUSIVE"
-    assert json.loads(c.get_policy("pilot"))["state"] == "ACTIVE"
+    assert json.loads(c.get_policy("pilot"))["state"] == "REVIEW_REQUIRED"

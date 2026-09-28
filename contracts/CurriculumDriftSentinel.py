@@ -142,6 +142,8 @@ class CurriculumDriftSentinel(gl.Contract):
             policy["state"] = "PAUSED"
         elif report["decision"] == "CONTINUE":
             policy["state"] = "ACTIVE"
+        elif policy["state"] == "ACTIVE":
+            policy["state"] = "REVIEW_REQUIRED"
         self.policies[policy_id] = canonical(policy)
 
     @gl.public.view

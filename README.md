@@ -9,7 +9,7 @@ A normal database can compare document hashes but cannot decide whether changed 
 ```text
 register baseline + live URL → permissionless audit → fetch both complete bodies
 → verify baseline SHA-256 → semantic per-objective comparison
-→ exact validator report equality → ACTIVE / PAUSED / unchanged-on-INCONCLUSIVE
+→ exact validator report equality → ACTIVE / PAUSED / REVIEW_REQUIRED
 ```
 
 Each `(policy_id,audit_id)` report is immutable and bound to a monotonically increasing round. A repeated audit ID reverts. The live source hash is observed by validators, never supplied as a claimed result. The baseline must be a stable, content-addressed URL in production. The current URL should point to the publisher's live syllabus. A publisher controlling both sources can still misrepresent reality; this contract only judges the two observed documents.
@@ -33,7 +33,7 @@ StudioNet is gasless. Inspect `genlayer receipt <hash>` for FINALIZED **and succ
 
 - Objective IDs: 1–5, immutable after registration. Audit IDs are unique per policy.
 - HTTPS sources only; complete response size ≤8 KiB. HTTP failures, invalid UTF-8, or baseline mismatch yield INCONCLUSIVE.
-- The LLM cannot choose final state directly: `MATERIAL`/`REMOVED` pauses, all `UNCHANGED` continues, any other vector is inconclusive.
+- The LLM cannot choose final state directly: `MATERIAL`/`REMOVED` pauses, all `UNCHANGED` continues. An inconclusive audit moves an ACTIVE policy to `REVIEW_REQUIRED`; it never clears an existing PAUSED state.
 - Validators reproduce source hashes, classification vector, decision, and report root exactly. Disagreement prevents a write.
 - Fetched documents are untrusted prompt data. Semantic ambiguity remains possible; do not treat this as accreditation or a warranty.
 
